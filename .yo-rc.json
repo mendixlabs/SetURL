@@ -1,0 +1,11 @@
+{
+  "generator-mendix": {
+    "promptValues": {
+      "copyright": "<Your Company> 2016",
+      "license": "Apache 2",
+      "author": "<You>",
+      "boilerplate": "empty",
+      "widgetoptions": []
+    }
+  }
+}

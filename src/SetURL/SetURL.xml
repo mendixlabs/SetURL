@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="SetURL.widget.SetURL" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+	<name>SetURL</name>
+	<description>The description of this widget.</description>
+
+	<icon />
+
+	<properties>
+		<property key="urlprefix" type="string" required="false" defaultValue="">
+			<caption>URL prefix</caption>
+			<category>Data source</category>
+			<description></description>
+		</property>
+
+		<property key="urlpostfix" type="string" required="false" defaultValue="">
+			<caption>URL postfix</caption>
+			<category>Data source</category>
+			<description></description>
+		</property>
+
+		<property key="title" type="string" required="false" defaultValue="">
+			<caption>Title</caption>
+			<category>Data source</category>
+			<description></description>
+		</property>
+
+		<property key="attr" type="attribute" required="false" allowNonPersistableEntities="true">
+			<caption>Replacement attribute</caption>
+			<category>Data source</category>
+			<description></description>
+			<attributeTypes>
+				<attributeType name="AutoNumber"/>
+				<attributeType name="String" />
+				<attributeType name="Enum"/>
+				<attributeType name="Integer"/>
+				<attributeType name="Float"/>
+				<attributeType name="Decimal"/>
+				<attributeType name="Long"/>
+			</attributeTypes>
+		</property>
+	</properties>
+</widget>
