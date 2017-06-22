@@ -24,7 +24,9 @@ define([
 
 		replaced: false,
 		origPath: "",
-		_onNavigateTo : null,
+		_onNavigateTo: null,
+		urlpostfix: "",
+		attr: "",
 		
 		startup: function () {
 			
@@ -41,7 +43,7 @@ define([
 
 		fixUrl: function (obj) {
 			var attrval = "";
-			if (obj != null) {
+			if (obj !== null && this.attr !== "") {
 				attrval = obj.get(this.attr);
 			}
 			this.origPath = location.pathname;
