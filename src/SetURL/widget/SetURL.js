@@ -33,7 +33,7 @@ define([
 			if (obj !== null && this.attr !== "") {
 				attrval = obj.get(this.attr);
 			}
-			this.origPath = location.pathname;
+			this.origPath = mx.homeUrl.replace(mx.appUrl, "/");
 			var state = history.state;
 			var prefix = (this.urlprefix.indexOf("/") === 0 ? "" : "/") + this.urlprefix;
 			var url = prefix + attrval + this.urlpostfix;
