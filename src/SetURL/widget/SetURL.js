@@ -30,6 +30,7 @@ define([
 			if (this.replaced)
 				return;
 
+			this.replaceattributes = [];
 			if (!obj || !this.attrs) {
 				this.fixUrl(this.url);
 			} else {
