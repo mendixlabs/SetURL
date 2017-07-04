@@ -6,37 +6,35 @@
 	<icon />
 
 	<properties>
-		<property key="urlprefix" type="string" required="false" defaultValue="">
-			<caption>URL prefix</caption>
+		<property key="url" type="string" required="false" defaultValue="">
+			<caption>URL String</caption>
 			<category>Data source</category>
 			<description></description>
 		</property>
 
-		<property key="urlpostfix" type="string" required="false" defaultValue="">
-			<caption>URL postfix</caption>
-			<category>Data source</category>
-			<description></description>
-		</property>
-
-		<property key="title" type="string" required="false" defaultValue="">
-			<caption>Title</caption>
-			<category>Data source</category>
-			<description></description>
-		</property>
-
-		<property key="attr" type="attribute" required="false" allowNonPersistableEntities="true">
-			<caption>Attribute</caption>
-			<category>Data source</category>
-			<description></description>
-			<attributeTypes>
-				<attributeType name="AutoNumber"/>
-				<attributeType name="String" />
-				<attributeType name="Enum"/>
-				<attributeType name="Integer"/>
-				<attributeType name="Float"/>
-				<attributeType name="Decimal"/>
-				<attributeType name="Long"/>
-			</attributeTypes>
+		<property key="attrs" type="object" isList="true" required="false">
+            <caption>Attributes</caption>
+            <category>Data source</category>
+            <description></description>
+            <properties>
+				<property key="variablename" type="string" required="false" defaultValue="">
+                    <caption>Variable name</caption>
+                    <category>Data source</category>
+                    <description>Identifies the attribute value, this name should be used in 'URL string' property.</description>
+                </property>
+				<property key="attr" type="attribute" allowNonPersistableEntities="true" isPath="optional" pathType="reference">
+					<caption>Attribute</caption>
+					<category>Data source</category>
+					<description>Value of this attribute will be used to replace ${your_Variable_Name}, defined in 'URL string' property</description>
+					<attributeTypes>
+						<attributeType name="AutoNumber"/>
+						<attributeType name="String" />
+						<attributeType name="Enum"/>
+						<attributeType name="Integer"/>
+						<attributeType name="Long"/>
+					</attributeTypes>
+				</property>
+			</properties>
 		</property>
 	</properties>
 </widget>

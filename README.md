@@ -10,13 +10,21 @@ For more information on contributing to this repository visit [Contributing to a
 
 ## Configuration
 
-For both widgets, the 'Title' attribute is not required and is used in the replaceState call. Currently, there are no browsers that actual use this, but it is best to stay future-proof.
+The URL is always set as a relative path from the root location.
+So if you are on the App Store, you might use this configuration:
+URL: "link/apps/${appid}/${creatorcompany}"
+With the attributes set to the 'AppID' and the 'Appstore.App_Creator/Appstore.Creator/Name'.
 
-Both widgets set the URL when they are loaded and set it back to the application base url 'index.html' once the user navigates away.
+From the root url "https://appstore.home.mendix.com/index3.html", the index3.html part is replaced with the configured path.
 
-The normal widget sets a static URL.
+This would result in the url:
+"https://appstore.home.mendix.com/link/app/65083/Mendix"
 
-The context widget combines a URL prefix and postfix with an attribute to form the final URL. All these can be empty if needed.
+Both widgets set the URL when they are loaded and set it back to the application normal url once the user navigates away.
+
+The 'Set URL' widget sets a static URL.
+
+The 'Set URL Context' widget let's you use ${} variables that will be replaced by the associated attributes.
 
 ## Technical information
 

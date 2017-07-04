@@ -6,14 +6,8 @@
 	<icon />
 
 	<properties>
-		<property key="urlprefix" type="string" required="true" defaultValue="">
+		<property key="url" type="string" required="true" defaultValue="">
 			<caption>URL</caption>
-			<category>Data source</category>
-			<description></description>
-		</property>
-
-		<property key="title" type="string" required="false" defaultValue="">
-			<caption>Title</caption>
 			<category>Data source</category>
 			<description></description>
 		</property>

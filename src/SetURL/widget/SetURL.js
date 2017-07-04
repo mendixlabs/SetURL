@@ -12,32 +12,66 @@ define([
 		replaced: false,
 		origPath: "",
 		_onNavigateTo: null,
+		_contextObj: null,
 		urlpostfix: "",
 		attr: "",
-		
+		attributeList: null,
+		replaceattributes: null,
+
 		startup: function () {
-			
+
 		},
 
 		update: function (obj, callback) {
 			callback();
 
+			this._contextObj = obj;
+
 			if (this.replaced)
 				return;
 
-			this.fixUrl(obj);
+			if (!obj || !this.attrs) {
+				this.fixUrl(this.url);
+			} else {
+				this._loadData(obj);
+			}
+
 		},
 
-		fixUrl: function (obj) {
-			var attrval = "";
-			if (obj !== null && this.attr !== "") {
-				attrval = obj.get(this.attr);
+		_loadData: function (obj) {
+			var funcArr = this.attrs.map(function (attr) {
+				return function (cb) {
+					this._contextObj.fetch(attr.attr, dojo.hitch(this, function (value) {
+						this.replaceattributes.push({
+							variable: attr.variablename,
+							value: value
+						});
+						cb();
+					}));
+				};
+			});
+
+			this.collect(funcArr, dojo.hitch(this, this._buildString), this);
+		},
+
+		_buildString: function () {
+			var settings = null,
+				attr = null,
+				url = this.url;
+			
+			for (attr in this.replaceattributes) {
+				settings = this.replaceattributes[attr];
+				url = url.split("${" + settings.variable + "}").join(settings.value);
 			}
+			this.fixUrl(url);
+		},
+
+		fixUrl: function (newUrl) {
+			var url = (newUrl.indexOf("/") === 0 ? "" : "/") + newUrl;
 			this.origPath = mx.homeUrl.replace(mx.appUrl, "/");
 			var state = history.state;
-			var prefix = (this.urlprefix.indexOf("/") === 0 ? "" : "/") + this.urlprefix;
-			var url = prefix + attrval + this.urlpostfix;
-			history.replaceState(state, this.title, url);
+			
+			history.replaceState(state, "", url);
 			this.replaced = true;
 			this._onNavigateTo = aspect.before(this.mxform, "navigateTo", lang.hitch(this, this.removeUrl));
 		},
