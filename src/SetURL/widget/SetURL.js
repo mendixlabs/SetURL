@@ -1,91 +1,87 @@
 define([
-	"dojo/_base/declare",
-	"mxui/widget/_WidgetBase",
+    "dojo/_base/declare",
+    "mxui/widget/_WidgetBase",
 
-	"dojo/_base/lang",
-	"dojo/aspect"
+    "dojo/_base/lang",
+    "dojo/aspect"
 ], function (declare, _WidgetBase, lang, aspect) {
-	"use strict";
+    "use strict";
 
-	return declare("SetURL.widget.SetURL", [_WidgetBase], {
+    return declare("SetURL.widget.SetURL", [_WidgetBase], {
 
-		replaced: false,
-		origPath: "",
-		_onNavigateTo: null,
-		_contextObj: null,
-		urlpostfix: "",
-		attr: "",
-		attributeList: null,
-		replaceattributes: null,
+        replaced: false,
+        origPath: "",
+        _onNavigateTo: null,
+        _contextObj: null,
+        urlpostfix: "",
+        attr: "",
+        attributeList: null,
+        replaceattributes: null,
 
-		startup: function () {
+        update: function (obj, callback) {
+            callback();
 
-		},
+            this._contextObj = obj;
 
-		update: function (obj, callback) {
-			callback();
+            this.replaceattributes = [];
+            if (!obj || !this.attrs) {
+                this.fixUrl(this.url);
+            } else {
+                this._loadData(obj);
+            }
+        },
 
-			this._contextObj = obj;
+        _loadData: function (obj) {
+            var funcArr = this.attrs.map(function (attr) {
+                return function (cb) {
+                    this._contextObj.fetch(attr.attr, dojo.hitch(this, function (value) {
+                        this.replaceattributes.push({
+                            variable: attr.variablename,
+                            value: value
+                        });
+                        cb();
+                    }));
+                };
+            });
 
-			this.replaceattributes = [];
-			if (!obj || !this.attrs) {
-				this.fixUrl(this.url);
-			} else {
-				this._loadData(obj);
-			}
-		},
+            this.collect(funcArr, dojo.hitch(this, this._buildString), this);
+        },
 
-		_loadData: function (obj) {
-			var funcArr = this.attrs.map(function (attr) {
-				return function (cb) {
-					this._contextObj.fetch(attr.attr, dojo.hitch(this, function (value) {
-						this.replaceattributes.push({
-							variable: attr.variablename,
-							value: value
-						});
-						cb();
-					}));
-				};
-			});
+        _buildString: function () {
+            var settings = null,
+                attr = null,
+                url = this.url;
 
-			this.collect(funcArr, dojo.hitch(this, this._buildString), this);
-		},
+            for (attr in this.replaceattributes) {
+                settings = this.replaceattributes[attr];
+                url = url.split("${" + settings.variable + "}").join(settings.value);
+            }
+            this.fixUrl(url);
+        },
 
-		_buildString: function () {
-			var settings = null,
-				attr = null,
-				url = this.url;
-			
-			for (attr in this.replaceattributes) {
-				settings = this.replaceattributes[attr];
-				url = url.split("${" + settings.variable + "}").join(settings.value);
-			}
-			this.fixUrl(url);
-		},
+        fixUrl: function (newUrl) {
+            var url = (newUrl.indexOf("/") === 0 ? "" : "/") + newUrl;
+            this.origPath = mx.homeUrl.replace(mx.appUrl, "/");
+            var state = history.state;
 
-		fixUrl: function (newUrl) {
-			var url = (newUrl.indexOf("/") === 0 ? "" : "/") + newUrl;
-			this.origPath = mx.homeUrl.replace(mx.appUrl, "/");
-			var state = history.state;
-			
-			history.replaceState(state, "", url);
-			this.replaced = true;
-			this._onNavigateTo = aspect.before(this.mxform, "navigateTo", lang.hitch(this, this.removeUrl));
-		},
+            history.replaceState(state, "", url);
+            this.replaced = true;
+            this._onNavigateTo = aspect.before(this.mxform, "navigateTo", lang.hitch(this, this.removeUrl));
+        },
 
-		removeUrl: function () {
-			if (this.replaced) {
-				var state = history.state;
-				var url = this.origPath;
-				history.replaceState(state, this.title, url);
-				this.replaced = false;
-			}
-		},
+        removeUrl: function () {
+            if (this.replaced) {
+                var state = history.state;
+                var url = this.origPath;
+                history.replaceState(state, this.title, url);
+                this.replaced = false;
+            }
+        },
 
-		uninitialize: function () {
-			this._onNavigateTo.remove();
-		}
-	});
+        uninitialize: function () {
+            this._onNavigateTo.remove();
+        }
+    });
 });
 
 require(["SetURL/widget/SetURL"]);

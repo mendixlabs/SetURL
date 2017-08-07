@@ -1,12 +1,11 @@
 {
   "name": "SetURL",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "This widget sets a string as url for the current page.",
   "license": "Apache 2",
   "author": "<You>",
   "private": true,
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",

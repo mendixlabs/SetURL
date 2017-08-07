@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <widget id="SetURL.widget.SetURL" needsEntityContext="false" xmlns="http://www.mendix.com/widget/1.0/">
-	<name>SetURL</name>
-	<description>The description of this widget.</description>
+    <name>SetURL</name>
+    <description>The description of this widget.</description>
 
-	<icon />
+    <icon />
 
-	<properties>
-		<property key="url" type="string" required="true" defaultValue="">
-			<caption>URL</caption>
-			<category>Data source</category>
-			<description></description>
-		</property>
-	</properties>
+    <properties>
+        <property key="url" type="string" required="true" defaultValue="">
+            <caption>URL</caption>
+            <category>Data source</category>
+            <description></description>
+        </property>
+    </properties>
 </widget>
