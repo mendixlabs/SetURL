@@ -27,16 +27,12 @@ define([
 
 			this._contextObj = obj;
 
-			if (this.replaced)
-				return;
-
 			this.replaceattributes = [];
 			if (!obj || !this.attrs) {
 				this.fixUrl(this.url);
 			} else {
 				this._loadData(obj);
 			}
-
 		},
 
 		_loadData: function (obj) {
