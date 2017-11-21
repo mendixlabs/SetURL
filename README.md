@@ -1,4 +1,4 @@
-# Set URL
+# Set URL [![Support](https://img.shields.io/badge/Mendix%20Support%3A-Community-orange.svg)](https://docs.mendix.com/community/app-store/app-store-content-support)
 
 This widget will set a URL when loaded, enabling users to bookmark or refresh the page with F5, without being reset to the homepage.
 
