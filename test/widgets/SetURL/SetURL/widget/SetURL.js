@@ -51,7 +51,6 @@ define([
         _buildString: function () {
             var settings = null,
                 attr = null,
-				useBackButton = this.useBackButton,
                 url = this.url;
 
             for (attr in this.replaceattributes) {
@@ -59,21 +58,22 @@ define([
                 url = url.split("${" + settings.variable + "}").join(settings.value);
             }
             this.fixUrl(url);
-			if (useBackButton){
-				this.addUrl(url);
-			}
         },
 
         fixUrl: function (newUrl) {
             var url = (newUrl.indexOf("/") === 0 ? "" : "/") + newUrl;
             this.origPath = mx.homeUrl.replace(mx.appUrl, "/");
             var state = history.state;
+			
+			if (useBackButton){
+				this.addUrl(url);
+			}
+		},
 
             history.replaceState(state, "", url);
             this.replaced = true;
             this._onNavigateTo = aspect.before(this.mxform, "navigateTo", lang.hitch(this, this.removeUrl));
         },
-		
 		//when navigating to other app and you want to use the backbutton
 		addUrl: function (newUrl) {
 			var url = (newUrl.indexOf("/") === 0 ? "" : "/") + newUrl;
@@ -81,6 +81,8 @@ define([
 			var state = history.state;
 			
 			history.pushState(state, "", url);
+			//this.replaced = true;
+			//this._onNavigateTo = aspect.before(this.mxform, "navigateTo", lang.hitch(this, this.removeUrl));
 		},
 
         removeUrl: function () {
