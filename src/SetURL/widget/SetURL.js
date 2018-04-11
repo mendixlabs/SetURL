@@ -17,6 +17,7 @@ define([
         attr: "",
         attributeList: null,
         replaceattributes: null,
+        getattributes: null,
 
         update: function (obj, callback) {
             callback();
@@ -24,7 +25,8 @@ define([
             this._contextObj = obj;
 
             this.replaceattributes = [];
-            if (!obj || !this.attrs) {
+            this.getattributes = [];
+            if (!obj || (!this.attrs || !this.getparams)) {
                 this.fixUrl(this.url);
             } else {
                 this._loadData(obj);
@@ -32,7 +34,8 @@ define([
         },
 
         _loadData: function (obj) {
-            var funcArr = this.attrs.map(function (attr) {
+            var funcArr = [];
+            funcArr = funcArr.concat(this.attrs.map(function (attr) {
                 return function (cb) {
                     this._contextObj.fetch(attr.attr, dojo.hitch(this, function (value) {
                         this.replaceattributes.push({
@@ -42,8 +45,19 @@ define([
                         cb();
                     }));
                 };
-            });
+            }));
+            funcArr = funcArr.concat(this.getparams.map(function (attr) {
+                return function (cb) {
+                    this._contextObj.fetch(attr.attr, dojo.hitch(this, function (value) {
+                        if (!!value || !attr.discardempty) {
+                            this.getattributes.push([attr.variablename, value].join("="));
+                        }
+                        cb();
+                    }));
+                };
+            }));
 
+            // this.collect(funcAttrsArr, dojo.hitch(this, this._buildString), this);
             this.collect(funcArr, dojo.hitch(this, this._buildString), this);
         },
 
@@ -55,6 +69,15 @@ define([
             for (attr in this.replaceattributes) {
                 settings = this.replaceattributes[attr];
                 url = url.split("${" + settings.variable + "}").join(settings.value);
+            }
+            if (this.getattributes.length > 0) {
+                if (url.indexOf("?") >= 0) {
+                    console.error("SetURL.js: URL already seems to contain get parameters. Skipping get params.");
+                } else {
+                    var getparams = this.getattributes.join("&");
+                    url += "?" + getparams;
+                }
+
             }
             this.fixUrl(url);
         },
