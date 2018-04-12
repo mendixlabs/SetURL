@@ -57,7 +57,6 @@ define([
                 };
             }));
 
-            // this.collect(funcAttrsArr, dojo.hitch(this, this._buildString), this);
             this.collect(funcArr, dojo.hitch(this, this._buildString), this);
         },
 
@@ -77,7 +76,6 @@ define([
                     var getparams = this.getattributes.join("&");
                     url += "?" + getparams;
                 }
-
             }
             this.fixUrl(url);
         },
