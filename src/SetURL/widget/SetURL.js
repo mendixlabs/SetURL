@@ -66,7 +66,8 @@ define([
                 url = this.url;
 
             for (attr in this.replaceattributes) {
-                settings = this.replaceattributes[attr];
+                settings = this.replaceattributes[attr].toString().replace(/ /g, '-');
+                
                 url = url.split("${" + settings.variable + "}").join(settings.value);
             }
             if (this.getattributes.length > 0) {
