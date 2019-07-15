@@ -40,6 +40,7 @@ define([
                     this._contextObj.fetch(attr.attr, dojo.hitch(this, function (value) {
                         this.replaceattributes.push({
                             variable: attr.variablename,
+                            replacespaces : attr.replacespaces,
                             value: value
                         });
                         cb();
@@ -66,7 +67,10 @@ define([
                 url = this.url;
 
             for (attr in this.replaceattributes) {
-                settings = this.replaceattributes[attr].toString().replace(/ /g, '-');
+                settings = this.replaceattributes[attr];
+
+                if (settings.replacespaces)
+                    settings.value = settings.value.toString().replace(/ /g, '-')
                 
                 url = url.split("${" + settings.variable + "}").join(settings.value);
             }
